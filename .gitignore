@@ -1,0 +1,25 @@
+# Archivos de credenciales y claves
+/backend/migracionesspain-449913-7513ab686269.json
+
+# Entorno virtual
+/venv/
+__pycache__/
+
+# Archivos generados o temporales
+*.pyc
+*.pyo
+*.pyd
+.Python
+env/
+env.bak/
+pip-log.txt
+pip-delete-this-directory.txt
+
+# Archivos del sistema
+.DS_Store
+Thumbs.db
+
+# Archivos de IDEs
+.idea/
+.vscode/
+*.sublime-workspace

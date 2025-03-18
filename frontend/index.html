@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Asilo y Migración</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <section class="hero" id="hero-section">
+        <h1>Asistente de Migración y Asilo</h1>
+        <p>Este es tu asistente con información pública de forma clara y sencilla para que manejes mejor tu proceso de migración o de asilo.</p>
+        
+        <button class="btn-iniciar" id="start-chat">Iniciar Conversación</button>
+        <a href="aviso-legal.html" class="btn-aviso">Aviso Legal</a>
+    </section>
+
+    <div class="chat-container" id="chat-container">
+        <div class="chat-header">
+            <h2>Asistente de Migración</h2>
+            <button class="close-chat" id="close-chat">X</button>
+        </div>
+        <div class="chat-body" id="chat-messages">
+            <div class="message assistant">¡Hola! ¿En qué puedo ayudarte hoy?</div>
+        </div>
+        <div class="chat-footer">
+            <input type="text" id="user-input" placeholder="Escribe tu mensaje...">
+            <button id="send-message">Enviar</button>
+        </div>
+    </div>
+
+    <footer>
+        <p>© 2025 Asilo y Migración</p>
+    </footer>
+
+    <script>
+        const startChatBtn = document.getElementById('start-chat');
+        const closeChatBtn = document.getElementById('close-chat');
+        const heroSection = document.getElementById('hero-section');
+        const chatContainer = document.getElementById('chat-container');
+        const sendMessageBtn = document.getElementById('send-message');
+        const userInput = document.getElementById('user-input');
+        const chatMessages = document.getElementById('chat-messages');
+
+        // Mostrar/ocultar el chat
+        startChatBtn.addEventListener('click', () => {
+            heroSection.style.display = 'none';
+            chatContainer.style.display = 'flex';
+        });
+
+        closeChatBtn.addEventListener('click', () => {
+            chatContainer.style.display = 'none';
+            heroSection.style.display = 'flex';
+        });
+
+        // Función para agregar un mensaje al chat
+        function addMessage(content, sender) {
+            const messageDiv = document.createElement('div');
+            messageDiv.classList.add('message', sender);
+            messageDiv.textContent = content;
+            chatMessages.appendChild(messageDiv);
+
+            // Hacer scroll hacia abajo para ver el último mensaje
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+
+        // Función para obtener una respuesta del asistente (Dialogflow CX)
+        async function getAssistantResponse(userMessage) {
+            try {
+                // Hacer una solicitud POST al backend de Flask con la URL completa
+                const response = await fetch('http://localhost:5000/chat', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ message: userMessage }),
+                });
+
+                // Verificar si la respuesta es exitosa
+                if (!response.ok) {
+                    throw new Error(`Error al obtener la respuesta: ${response.statusText}`);
+                }
+
+                // Obtener la respuesta en formato JSON
+                const data = await response.json();
+                return data.response || "No se recibió una respuesta válida del asistente.";
+            } catch (error) {
+                console.error('Error:', error);
+                return "Lo siento, hubo un error al procesar tu solicitud. Inténtalo de nuevo más tarde.";
+            }
+        }
+
+        // Enviar mensaje al hacer clic en "Enviar"
+        sendMessageBtn.addEventListener('click', async () => {
+            const message = userInput.value.trim();
+            if (message) {
+                addMessage(message, 'user'); // Mostrar el mensaje del usuario
+                userInput.value = ''; // Limpiar el input
+
+                // Obtener la respuesta del asistente (Dialogflow CX)
+                const response = await getAssistantResponse(message);
+                addMessage(response, 'assistant'); // Mostrar la respuesta del asistente
+            }
+        });
+
+        // Enviar mensaje al presionar Enter
+        userInput.addEventListener('keypress', async (e) => {
+            if (e.key === 'Enter') {
+                const message = userInput.value.trim();
+                if (message) {
+                    addMessage(message, 'user'); // Mostrar el mensaje del usuario
+                    userInput.value = ''; // Limpiar el input
+
+                    // Obtener la respuesta del asistente (Dialogflow CX)
+                    const response = await getAssistantResponse(message);
+                    addMessage(response, 'assistant'); // Mostrar la respuesta del asistente
+                }
+            }
+        });
+    </script>
+</body>
+</html>
