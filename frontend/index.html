@@ -7,57 +7,124 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
+    <!-- Header persistente -->
+    <header class="main-header">
+        <img src="logo.png" alt="Logo Asilo y Migración" class="logo">
+    </header>
+
+    <!-- Sección inicial -->
     <section class="hero" id="hero-section">
-        <h1>Asistente de Migración y Asilo</h1>
-        <p>Este es tu asistente con información pública de forma clara y sencilla para que manejes mejor tu proceso de migración o de asilo.</p>
-        
-        <button class="btn-iniciar" id="start-chat">Iniciar Conversación</button>
-        <a href="aviso-legal.html" class="btn-aviso">Aviso Legal</a>
+        <div class="welcome-container">
+            <h1>Asistente de Migración y Asilo</h1>
+            <p>Este es tu asistente con información pública de forma clara y sencilla para que manejes mejor tu proceso de migración o de asilo.</p>
+            <button class="btn-iniciar" id="start-chat">Iniciar Conversación</button>
+            <div class="suggested-questions initial">
+                <h3>Preguntas sugeridas</h3>
+                <button class="suggested-question" data-question="¿Cuáles son los requisitos para solicitar asilo en España?">
+                    <span class="icon">📜</span> ¿Cuáles son los requisitos para solicitar asilo en España?
+                </button>
+                <button class="suggested-question" data-question="¿Cuánto tiempo tarda el proceso de solicitud de residencia en España?">
+                    <span class="icon">⏳</span> ¿Cuánto tiempo tarda el proceso de solicitud de residencia en España?
+                </button>
+                <button class="suggested-question" data-question="¿Qué documentos necesito para la reagrupación familiar en España?">
+                    <span class="icon">👨‍👩‍👧</span> ¿Qué documentos necesito para la reagrupación familiar en España?
+                </button>
+                <button class="suggested-question" data-question="¿Cómo puedo obtener la nacionalidad española?">
+                    <span class="icon">🇪🇸</span> ¿Cómo puedo obtener la nacionalidad española?
+                </button>
+                <button class="suggested-question" data-question="¿Qué derechos tengo como inmigrante en España?">
+                    <span class="icon">⚖️</span> ¿Qué derechos tengo como inmigrante en España?
+                </button>
+            </div>
+        </div>
     </section>
 
-    <div class="chat-container" id="chat-container">
-        <div class="chat-header">
-            <h2>Asistente de Migración</h2>
-            <button class="close-chat" id="close-chat">X</button>
+    <!-- Sección del chat -->
+    <div class="chat-wrapper" id="chat-wrapper">
+        <div class="chat-container" id="chat-container">
+            <div class="chat-header">
+                <h2>Asistente de Migración</h2>
+                <button class="close-chat" id="close-chat">X</button>
+            </div>
+            <div class="chat-body" id="chat-messages">
+                <div class="message assistant">
+                    <span class="avatar">A</span>
+                    <div class="message-content">¡Hola! ¿En qué puedo ayudarte hoy?</div>
+                </div>
+            </div>
+            <div class="chat-footer">
+                <input type="text" id="user-input" placeholder="Escribe tu mensaje...">
+                <button id="send-message">Enviar</button>
+            </div>
         </div>
-        <div class="chat-body" id="chat-messages">
-            <div class="message assistant">¡Hola! ¿En qué puedo ayudarte hoy?</div>
-        </div>
-        <div class="chat-footer">
-            <input type="text" id="user-input" placeholder="Escribe tu mensaje...">
-            <button id="send-message">Enviar</button>
+
+        <div class="suggested-questions chat-view">
+            <h3>Preguntas sugeridas</h3>
+            <button class="suggested-question" data-question="¿Cuáles son los requisitos para solicitar asilo en España?">
+                <span class="icon">📜</span> ¿Cuáles son los requisitos para solicitar asilo en España?
+            </button>
+            <button class="suggested-question" data-question="¿Cuánto tiempo tarda el proceso de solicitud de residencia en España?">
+                <span class="icon">⏳</span> ¿Cuánto tiempo tarda el proceso de solicitud de residencia en España?
+            </button>
+            <button class="suggested-question" data-question="¿Qué documentos necesito para la reagrupación familiar en España?">
+                <span class="icon">👨‍👩‍👧</span> ¿Qué documentos necesito para la reagrupación familiar en España?
+            </button>
+            <button class="suggested-question" data-question="¿Cómo puedo obtener la nacionalidad española?">
+                <span class="icon">🇪🇸</span> ¿Cómo puedo obtener la nacionalidad española?
+            </button>
+            <button class="suggested-question" data-question="¿Qué derechos tengo como inmigrante en España?">
+                <span class="icon">⚖️</span> ¿Qué derechos tengo como inmigrante en España?
+            </button>
         </div>
     </div>
 
+    <!-- Footer con Aviso Legal -->
     <footer>
-        <p>© 2025 Asilo y Migración</p>
+        <p>© 2025 Asilo y Migración | <a href="aviso-legal.html" class="btn-aviso">Aviso Legal</a></p>
     </footer>
 
     <script>
         const startChatBtn = document.getElementById('start-chat');
         const closeChatBtn = document.getElementById('close-chat');
         const heroSection = document.getElementById('hero-section');
+        const chatWrapper = document.getElementById('chat-wrapper');
         const chatContainer = document.getElementById('chat-container');
         const sendMessageBtn = document.getElementById('send-message');
         const userInput = document.getElementById('user-input');
         const chatMessages = document.getElementById('chat-messages');
+        const suggestedQuestions = document.querySelectorAll('.suggested-question');
 
-        // Mostrar/ocultar el chat
-        startChatBtn.addEventListener('click', () => {
+        // Función para abrir el chat
+        function openChat() {
             heroSection.style.display = 'none';
+            chatWrapper.style.display = 'flex';
             chatContainer.style.display = 'flex';
-        });
+        }
 
-        closeChatBtn.addEventListener('click', () => {
+        // Función para cerrar el chat
+        function closeChat() {
+            chatWrapper.style.display = 'none';
             chatContainer.style.display = 'none';
             heroSection.style.display = 'flex';
-        });
+        }
 
         // Función para agregar un mensaje al chat
         function addMessage(content, sender) {
             const messageDiv = document.createElement('div');
             messageDiv.classList.add('message', sender);
-            messageDiv.textContent = content;
+            
+            if (sender === 'assistant') {
+                const avatar = document.createElement('span');
+                avatar.classList.add('avatar');
+                avatar.textContent = 'A';
+                messageDiv.appendChild(avatar);
+            }
+            
+            const contentDiv = document.createElement('div');
+            contentDiv.classList.add('message-content');
+            contentDiv.textContent = content;
+            messageDiv.appendChild(contentDiv);
+
             chatMessages.appendChild(messageDiv);
 
             // Hacer scroll hacia abajo para ver el último mensaje
@@ -67,7 +134,6 @@
         // Función para obtener una respuesta del asistente (Dialogflow CX)
         async function getAssistantResponse(userMessage) {
             try {
-                // Hacer una solicitud POST al backend de Flask con la URL completa
                 const response = await fetch('http://localhost:5000/chat', {
                     method: 'POST',
                     headers: {
@@ -76,12 +142,10 @@
                     body: JSON.stringify({ message: userMessage }),
                 });
 
-                // Verificar si la respuesta es exitosa
                 if (!response.ok) {
                     throw new Error(`Error al obtener la respuesta: ${response.statusText}`);
                 }
 
-                // Obtener la respuesta en formato JSON
                 const data = await response.json();
                 return data.response || "No se recibió una respuesta válida del asistente.";
             } catch (error) {
@@ -90,16 +154,25 @@
             }
         }
 
+        // Abrir el chat al hacer clic en "Iniciar Conversación"
+        startChatBtn.addEventListener('click', () => {
+            openChat();
+        });
+
+        // Cerrar el chat al hacer clic en "X"
+        closeChatBtn.addEventListener('click', () => {
+            closeChat();
+        });
+
         // Enviar mensaje al hacer clic en "Enviar"
         sendMessageBtn.addEventListener('click', async () => {
             const message = userInput.value.trim();
             if (message) {
-                addMessage(message, 'user'); // Mostrar el mensaje del usuario
-                userInput.value = ''; // Limpiar el input
+                addMessage(message, 'user');
+                userInput.value = '';
 
-                // Obtener la respuesta del asistente (Dialogflow CX)
                 const response = await getAssistantResponse(message);
-                addMessage(response, 'assistant'); // Mostrar la respuesta del asistente
+                addMessage(response, 'assistant');
             }
         });
 
@@ -108,14 +181,28 @@
             if (e.key === 'Enter') {
                 const message = userInput.value.trim();
                 if (message) {
-                    addMessage(message, 'user'); // Mostrar el mensaje del usuario
-                    userInput.value = ''; // Limpiar el input
+                    addMessage(message, 'user');
+                    userInput.value = '';
 
-                    // Obtener la respuesta del asistente (Dialogflow CX)
                     const response = await getAssistantResponse(message);
-                    addMessage(response, 'assistant'); // Mostrar la respuesta del asistente
+                    addMessage(response, 'assistant');
                 }
             }
+        });
+
+        // Enviar preguntas sugeridas al hacer clic
+        suggestedQuestions.forEach(button => {
+            button.addEventListener('click', async () => {
+                const question = button.getAttribute('data-question');
+                // Si el chat no está abierto, ábrelo
+                if (chatWrapper.style.display !== 'flex') {
+                    openChat();
+                }
+                // Enviar la pregunta al chat
+                addMessage(question, 'user');
+                const response = await getAssistantResponse(question);
+                addMessage(response, 'assistant');
+            });
         });
     </script>
 </body>
